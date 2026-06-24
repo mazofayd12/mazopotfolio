@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Auth Models ───────────────────────────────────────────
+
+enum UserRole {
+  ADMIN
+  EDITOR
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  password      String
+  role          UserRole  @default(ADMIN)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("users")
+}
+
+// ─── Content Models ────────────────────────────────────────
+
+model Project {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  description     String?   @db.Text
+  content         String?   @db.Text
+  coverImage      String?
+  videoUrl        String?
+  images          Json?     // Array of image URLs
+  category        String    @default("Websites")
+  technologies    String[]
+  projectUrl      String?
+  githubUrl       String?
+  clientName      String?
+  completionDate  DateTime?
+  featured        Boolean   @default(false)
+  published       Boolean   @default(false)
+  order           Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([featured])
+  @@index([published])
+  @@map("projects")
+}
+
+model BlogPost {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  content         String?   @db.Text
+  excerpt         String?   @db.Text
+  coverImage      String?
+  videoUrl        String?
+  category        String?
+  tags            String[]
+  published       Boolean   @default(false)
+  publishedAt     DateTime?
+  seoTitle        String?
+  seoDescription  String?   @db.Text
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([slug])
+  @@index([published])
+  @@index([category])
+  @@map("blog_posts")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  icon        String   @default("code")
+  order       Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  company   String?
+  content   String   @db.Text
+  avatar    String?
+  rating    Int      @default(5)
+  published Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("testimonials")
+}
+
+model Skill {
+  id          String   @id @default(cuid())
+  name        String
+  category    String   @default("Frontend")
+  proficiency Int      @default(80)
+  icon        String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("skills")
+}
+
+model Experience {
+  id          String    @id @default(cuid())
+  title       String
+  company     String
+  description String?   @db.Text
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("experiences")
+}
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String
+  filename  String
+  type      String   @default("image")
+  size      Int      @default(0)
+  alt       String?
+  createdAt DateTime @default(now())
+
+  @@map("media")
+}
+
+model SiteSettings {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String @db.Text
+
+  @@map("site_settings")
+}
+
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_submissions")
+}
+
+model SeoSettings {
+  id          String  @id @default(cuid())
+  page        String  @unique
+  title       String?
+  description String? @db.Text
+  ogImage     String?
+  keywords    String?
+
+  @@map("seo_settings")
+}

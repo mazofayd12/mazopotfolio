@@ -1,36 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💎 Mazopotfolio CMS Platform
 
-## Getting Started
+A premium, production-ready Portfolio CMS platform designed and built for **Moaz Mohamed**. It features a stunning, dark-luxury glassmorphic public-facing site and a full-featured Admin Dashboard with credentials authentication.
 
-First, run the development server:
+## 🚀 Technologies Used
 
+- **Core**: Next.js 15 (App Router), React 19, TypeScript
+- **Styling**: Tailwind CSS v4, Framer Motion (via `motion/react`)
+- **Database**: PostgreSQL, Prisma ORM
+- **Authentication**: NextAuth.js v5 (Auth.js)
+- **CMS Editor**: TipTap Rich Text Editor
+- **Storage**: UploadThing (File Uploads)
+- **Components**: Shadcn UI (Radix-based)
+
+---
+
+## 🎨 Public Features
+- **Luxury Aesthetic**: Glassmorphism, animated mesh gradients, floating neon orbs, and smooth parallax effects.
+- **Hero & Intro**: Animated name display with interactive scroll indicators and dynamic headlines.
+- **About & Stats**: Animated counter statistics and structured timeline display.
+- **Services Grid**: Bento-grid capabilities showcase with glowing hover effects.
+- **Skills Matrix**: Category tabs with interactive animated proficiency meters.
+- **Portfolio Case Studies**: Filterable project display with animated filtering (`AnimatePresence`).
+- **Testimonial Carousel**: Multi-row infinite marquee scrolling in opposite directions.
+- **Experience Timeline**: Vertical chronological history with path-drawn connecting animations.
+- **Contact Inbox**: Contact form hooked up with secure server actions.
+- **Blog Platform**: Full blog list and post view with HTML styling and category segregation.
+
+## 🔒 Administrative Dashboard
+- **Admin Authentication**: Safe credentials login with NextAuth protection.
+- **Management Center**:
+  - **Projects CRUD**: Create and edit projects, toggle visibility, and mark featured items.
+  - **Blog Editor**: Full blog publishing setup with TipTap rich text, excerpt, tags, and custom SEO configurations.
+  - **Services, Testimonials, Skills & Experience**: Manage all portfolio sections via modals and lists.
+  - **Media Library**: View and manage asset URLs and alt texts.
+  - **Messages**: Contact form inbox with mark-as-read/unread and delete features.
+  - **Site Settings**: Core configuration panel to update headlines, bios, stats, contact info, and social links instantly.
+
+---
+
+## ⚙️ Project Setup
+
+### 1. Prerequisites
+Ensure you have **Node.js (v18+)** and a **PostgreSQL** database instance running.
+
+### 2. Configure Environment Variables
+Copy `.env.example` to `.env` and configure the values:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env
+```
+Key configuration items:
+- `DATABASE_URL`: PostgreSQL connection string.
+- `AUTH_SECRET`: Secret key for NextAuth. Generate one using:
+  ```bash
+  npx auth secret
+  ```
+- `UPLOADTHING_TOKEN`: UploadThing API token for handling images.
+- `ADMIN_EMAIL` & `ADMIN_PASSWORD`: Default login details for the admin dashboard.
+
+### 3. Install Dependencies
+Run the installation command:
+```bash
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 4. Database Setup & Seeding
+Deploy database schemas and seed default configuration & sample data:
+```bash
+npx prisma migrate dev --name init
+npx prisma db seed
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 5. Running the Application
+To start the local development server:
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to view the site, and [http://localhost:3000/admin](http://localhost:3000/admin) to manage the CMS.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Default admin credentials (from seeding):
+- **Email**: `admin@moazmohamed.com`
+- **Password**: `changeme123`
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🏗️ Project Structure
+```text
+├── prisma/                 # Database schema and seed scripts
+├── src/
+│   ├── actions/            # Server actions (CRUD, mail, auth mutations)
+│   ├── app/                # App router pages (public & admin groups)
+│   │   ├── (public)/       # Public pages route group
+│   │   └── admin/          # Admin CMS route group
+│   ├── components/         # React Components
+│   │   ├── admin/          # Dashboard components (sidebar, editor, shell)
+│   │   ├── public/         # Interactive website sections (hero, portfolio)
+│   │   ├── shared/         # Shared assets (brand icons, section headers)
+│   │   └── ui/             # Shadcn UI primitives
+│   ├── lib/                # Shared utilities (prisma client, validations, auth)
+│   └── styles/             # Global styles (Tailwind config, custom classes)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Verification & Building
+To build the project for production and test static page compilation:
+```bash
+npm run build
+npm run start
+```
