@@ -106,3 +106,4 @@ To build the project for production and test static page compilation:
 npm run build
 npm run start
 ```
+# mazopotfolio
