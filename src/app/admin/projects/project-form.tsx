@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import slugify from "slugify";
 import { UploadButton } from "@/lib/uploadthing";
 import { PremiumImageUploader } from "@/components/admin/premium-image-uploader";
+import { RichTextEditor } from "@/components/admin/rich-text-editor";
 
 interface ProjectFormProps {
   project?: {
@@ -423,17 +424,13 @@ export function ProjectForm({ project, onSubmitAction, title }: ProjectFormProps
               />
             </div>
 
-            {/* Long Content (Rich HTML text) */}
+            {/* Long Content (Rich Text Editor) */}
             <div className="space-y-2">
-              <Label htmlFor="content" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Detailed HTML Content</Label>
-              <Textarea
-                id="content"
-                name="content"
-                value={form.content}
-                onChange={handleChange}
-                placeholder="<p>Write dynamic case study content here using HTML tags like p, h3, ul...</p>"
-                rows={8}
-                className="bg-white/[0.01] border-white/[0.06] rounded-xl focus:border-primary/50 focus:ring-primary/20"
+              <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Detailed Content</Label>
+              <RichTextEditor
+                content={form.content}
+                onChange={(html) => setForm((prev) => ({ ...prev, content: html }))}
+                placeholder="Write dynamic case study content here..."
               />
             </div>
 

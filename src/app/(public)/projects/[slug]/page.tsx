@@ -129,7 +129,21 @@ export default async function ProjectDetailPage({ params }: ProjectDetailsProps)
               {/* Long Description Content */}
               {project.content && (
                 <div
-                  className="prose prose-invert max-w-none text-muted space-y-4 pt-4 border-t border-white/[0.05]"
+                  className="prose prose-invert max-w-none text-muted space-y-6 pt-6 text-base leading-relaxed
+                    prose-headings:font-heading prose-headings:font-bold prose-headings:text-foreground
+                    prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4
+                    prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+                    prose-p:mb-4
+                    prose-a:text-primary-light prose-a:no-underline hover:prose-a:underline
+                    prose-strong:text-foreground prose-strong:font-bold
+                    prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-4
+                    prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-4
+                    prose-li:mb-2
+                    prose-blockquote:border-l-4 prose-blockquote:border-primary/40 prose-blockquote:italic prose-blockquote:bg-white/[0.01] prose-blockquote:p-4 prose-blockquote:rounded-r-xl prose-blockquote:my-6
+                    prose-code:text-foreground prose-code:bg-white/[0.04] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-code:font-mono
+                    prose-pre:bg-black/60 prose-pre:border prose-pre:border-white/[0.05] prose-pre:p-4 prose-pre:rounded-xl prose-pre:overflow-x-auto
+                    prose-img:rounded-xl prose-img:border prose-img:border-white/[0.05]
+                    border-t border-white/[0.05]"
                   dangerouslySetInnerHTML={{ __html: project.content }}
                 />
               )}
