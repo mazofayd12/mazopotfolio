@@ -130,7 +130,11 @@ export default async function ProjectDetailPage({ params }: ProjectDetailsProps)
                   </h3>
                   <div className="relative w-full aspect-[16/10] overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.01]">
                     <iframe
-                      src={`https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(project.figmaUrl)}`}
+                      src={
+                        project.figmaUrl.includes("embed")
+                          ? project.figmaUrl
+                          : `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(project.figmaUrl)}`
+                      }
                       className="absolute inset-0 w-full h-full border-0"
                       allowFullScreen
                     />
