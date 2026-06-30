@@ -77,6 +77,7 @@ export async function createProject(data: unknown) {
     });
     revalidatePath("/admin/projects");
     revalidatePath("/projects");
+    revalidatePath("/");
     return { success: true, project };
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Failed to create project";
@@ -108,6 +109,7 @@ export async function updateProject(id: string, data: unknown) {
     revalidatePath("/admin/projects");
     revalidatePath("/projects");
     revalidatePath(`/projects/${project.slug}`);
+    revalidatePath("/");
     return { success: true, project };
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Failed to update project";
@@ -122,6 +124,7 @@ export async function deleteProject(id: string) {
     await prisma.project.delete({ where: { id } });
     revalidatePath("/admin/projects");
     revalidatePath("/projects");
+    revalidatePath("/");
     return { success: true };
   } catch {
     return { error: "Failed to delete project" };
@@ -141,6 +144,7 @@ export async function toggleProjectFeatured(id: string) {
     });
     revalidatePath("/admin/projects");
     revalidatePath("/projects");
+    revalidatePath("/");
     return { success: true, featured: !project.featured };
   } catch {
     return { error: "Failed to toggle featured status" };
@@ -160,6 +164,7 @@ export async function toggleProjectPublished(id: string) {
     });
     revalidatePath("/admin/projects");
     revalidatePath("/projects");
+    revalidatePath("/");
     return { success: true, published: !project.published };
   } catch {
     return { error: "Failed to toggle published status" };
