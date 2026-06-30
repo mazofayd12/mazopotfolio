@@ -11,6 +11,7 @@ import { Save, X, Image, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { updateSettings } from "@/actions/settings";
 import { UploadButton } from "@/lib/uploadthing";
+import { PremiumImageUploader } from "@/components/admin/premium-image-uploader";
 
 interface SettingItem {
   key: string;
@@ -171,46 +172,13 @@ export function SettingsClient({ initialSettings }: SettingsClientProps) {
                 {/* Profile Photo Uploader */}
                 <div className="space-y-3 pt-2">
                   <Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Profile Photo</Label>
-                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                    <div className="relative aspect-square w-28 overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.02] flex items-center justify-center">
-                      {form.aboutPhoto ? (
-                        <>
-                          <img src={form.aboutPhoto} alt="Profile preview" className="object-cover w-full h-full" />
-                          <button
-                            type="button"
-                            onClick={() => setForm((prev) => ({ ...prev, aboutPhoto: "" }))}
-                            className="absolute top-1 right-1 p-1 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
-                        </>
-                      ) : (
-                        <Image className="h-8 w-8 text-muted-foreground/40" />
-                      )}
-                    </div>
-                    <div className="flex-grow space-y-2">
-                      <UploadButton
-                        endpoint="imageUploader"
-                        onClientUploadComplete={(res) => {
-                          if (res && res.length > 0) {
-                            setForm((prev) => ({ ...prev, aboutPhoto: res[0].url }));
-                            toast.success("Profile photo uploaded successfully!");
-                          }
-                        }}
-                        onUploadError={(err) => {
-                          toast.error(`Upload failed: ${err.message}`);
-                        }}
-                      />
-                      <Label htmlFor="aboutPhoto" className="text-[10px] font-semibold text-muted/60 block mt-2">Or paste photo URL:</Label>
-                      <Input
-                        id="aboutPhoto"
-                        name="aboutPhoto"
-                        value={form.aboutPhoto}
-                        onChange={handleChange}
-                        className="h-9 bg-white/[0.01] border-white/[0.06] rounded-lg text-xs"
-                      />
-                    </div>
-                  </div>
+                  <PremiumImageUploader
+                    value={form.aboutPhoto}
+                    onChange={(url) => setForm((prev) => ({ ...prev, aboutPhoto: url }))}
+                    endpoint="imageUploader"
+                    aspectRatio="square"
+                    maxSizeKb={400}
+                  />
                 </div>
 
                 {/* Resume PDF Uploader */}

@@ -14,6 +14,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import slugify from "slugify";
 import { UploadButton } from "@/lib/uploadthing";
+import { PremiumImageUploader } from "@/components/admin/premium-image-uploader";
 
 interface ProjectFormProps {
   project?: {
@@ -241,55 +242,13 @@ export function ProjectForm({ project, onSubmitAction, title }: ProjectFormProps
                 {/* Cover Image Upload & Input */}
                 <div className="space-y-3 p-4 rounded-xl border border-white/[0.04] bg-white/[0.01]">
                   <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">Cover Image</Label>
-                  
-                  {form.coverImage ? (
-                    <div className="relative aspect-video w-full rounded-lg overflow-hidden border border-white/[0.08] bg-black/40 flex items-center justify-center group">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={form.coverImage} alt="Cover image preview" className="object-cover w-full h-full" />
-                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                        <Button 
-                          type="button" 
-                          variant="destructive" 
-                          size="sm"
-                          onClick={() => setForm((prev) => ({ ...prev, coverImage: "" }))}
-                        >
-                          Remove Image
-                        </Button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-white/[0.08] rounded-lg bg-black/20 gap-2">
-                      <p className="text-xs text-muted">Upload an image file (max 4MB)</p>
-                      <UploadButton
-                        endpoint="imageUploader"
-                        onClientUploadComplete={(res) => {
-                          if (res?.[0]) {
-                            setForm((prev) => ({ ...prev, coverImage: res[0].url }));
-                            toast.success("Cover image uploaded successfully!");
-                          }
-                        }}
-                        onUploadError={(error: Error) => {
-                          toast.error(`Upload failed: ${error.message}`);
-                        }}
-                        appearance={{
-                          button: "h-9 px-4 rounded-xl text-xs bg-white/[0.05] border border-white/[0.08] text-white hover:bg-white/[0.1] transition-all",
-                          allowedContent: "hidden",
-                        }}
-                      />
-                    </div>
-                  )}
-
-                  <div className="space-y-1">
-                    <Label htmlFor="coverImage" className="text-[10px] font-semibold text-muted/60">Or paste image URL:</Label>
-                    <Input
-                      id="coverImage"
-                      name="coverImage"
-                      value={form.coverImage}
-                      onChange={handleChange}
-                      placeholder="https://example.com/image.jpg"
-                      className="h-9 bg-white/[0.01] border-white/[0.06] rounded-xl text-xs"
-                    />
-                  </div>
+                  <PremiumImageUploader
+                    value={form.coverImage}
+                    onChange={(url) => setForm((prev) => ({ ...prev, coverImage: url }))}
+                    endpoint="imageUploader"
+                    aspectRatio="video"
+                    maxSizeKb={400}
+                  />
                 </div>
 
                 {/* Video Upload & Input */}
@@ -351,30 +310,15 @@ export function ProjectForm({ project, onSubmitAction, title }: ProjectFormProps
             {/* Gallery Images (Multiple Images) */}
             <div className="space-y-3 p-4 rounded-xl border border-white/[0.04] bg-white/[0.01]">
               <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
-                Project Gallery Images (Upload up to 10 images)
+                Project Gallery Images
               </Label>
               
-              {/* Upload Button */}
-              <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-white/[0.08] rounded-lg bg-black/20 gap-2">
-                <p className="text-xs text-muted">Upload one or more image files (max 8MB each, up to 10)</p>
-                <UploadButton
-                  endpoint="projectImageUploader"
-                  onClientUploadComplete={(res) => {
-                    if (res && res.length > 0) {
-                      const urls = res.map((file) => file.url);
-                      setGalleryImages((prev) => [...prev, ...urls]);
-                      toast.success("Gallery images uploaded successfully!");
-                    }
-                  }}
-                  onUploadError={(error: Error) => {
-                    toast.error(`Upload failed: ${error.message}`);
-                  }}
-                  appearance={{
-                    button: "h-9 px-4 rounded-xl text-xs bg-white/[0.05] border border-white/[0.08] text-white hover:bg-white/[0.1] transition-all",
-                    allowedContent: "hidden",
-                  }}
-                />
-              </div>
+              <PremiumImageUploader
+                endpoint="projectImageUploader"
+                multiple
+                onUploadComplete={(urls) => setGalleryImages((prev) => [...prev, ...urls])}
+                maxSizeKb={400}
+              />
 
               {/* Gallery Preview Grid */}
               {galleryImages.length > 0 && (
