@@ -7,12 +7,12 @@ import { cn } from "@/lib/utils";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Portfolio", href: "#portfolio" },
+  { label: "Home", href: "/#home" },
+  { label: "About", href: "/#about" },
+  { label: "Services", href: "/#services" },
+  { label: "Portfolio", href: "/#portfolio" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export function Navbar() {
@@ -81,7 +81,7 @@ export function Navbar() {
           {/* CTA + Hamburger */}
           <div className="flex items-center gap-3">
             <Link
-              href="#contact"
+              href="/#contact"
               className="hidden rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-2 text-sm font-medium text-white shadow-lg shadow-primary/25 transition-all duration-300 hover:scale-[1.02] hover:shadow-primary/40 md:inline-flex"
             >
               Let&apos;s Talk
@@ -137,7 +137,7 @@ export function Navbar() {
                 className="mt-6"
               >
                 <Link
-                  href="#contact"
+                  href="/#contact"
                   onClick={() => setMobileOpen(false)}
                   className="rounded-lg bg-gradient-to-r from-primary to-secondary px-8 py-3 text-base font-medium text-white shadow-lg shadow-primary/25"
                 >
