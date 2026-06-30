@@ -4,7 +4,11 @@ import { ArrowUp } from "lucide-react";
 import { GithubIcon, LinkedinIcon, TwitterIcon } from "@/components/shared/brand-icons";
 import Link from "next/link";
 
-export function Footer() {
+interface FooterProps {
+  settings?: Record<string, string>;
+}
+
+export function Footer({ settings = {} }: FooterProps) {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -28,23 +32,23 @@ export function Footer() {
 
           {/* Quick Links */}
           <div className="flex flex-wrap justify-center gap-6 text-sm font-semibold text-muted">
-            <a href="#about" className="hover:text-primary-light transition-colors">About</a>
-            <a href="#services" className="hover:text-primary-light transition-colors">Services</a>
-            <a href="#portfolio" className="hover:text-primary-light transition-colors">Work</a>
-            <a href="#blog" className="hover:text-primary-light transition-colors">Blog</a>
-            <a href="#contact" className="hover:text-primary-light transition-colors">Contact</a>
+            <a href="/#about" className="hover:text-primary-light transition-colors">About</a>
+            <a href="/#services" className="hover:text-primary-light transition-colors">Services</a>
+            <a href="/#portfolio" className="hover:text-primary-light transition-colors">Work</a>
+            <a href="/blog" className="hover:text-primary-light transition-colors">Blog</a>
+            <a href="/#contact" className="hover:text-primary-light transition-colors">Contact</a>
           </div>
 
           {/* Social Icons & Back to Top */}
           <div className="flex items-center gap-4">
             <div className="flex gap-2">
-              <a href="#" className="h-9 w-9 rounded-lg bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-muted hover:text-white hover:bg-white/[0.05] transition-all">
+              <a href={settings.socialGithub || "#"} target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-lg bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-muted hover:text-white hover:bg-white/[0.05] transition-all">
                 <GithubIcon className="h-4 w-4" />
               </a>
-              <a href="#" className="h-9 w-9 rounded-lg bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-muted hover:text-white hover:bg-white/[0.05] transition-all">
+              <a href={settings.socialLinkedin || "#"} target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-lg bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-muted hover:text-white hover:bg-white/[0.05] transition-all">
                 <LinkedinIcon className="h-4 w-4" />
               </a>
-              <a href="#" className="h-9 w-9 rounded-lg bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-muted hover:text-white hover:bg-white/[0.05] transition-all">
+              <a href={settings.socialTwitter || "#"} target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-lg bg-white/[0.02] border border-white/[0.05] flex items-center justify-center text-muted hover:text-white hover:bg-white/[0.05] transition-all">
                 <TwitterIcon className="h-4 w-4" />
               </a>
             </div>

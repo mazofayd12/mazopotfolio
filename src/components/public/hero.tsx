@@ -48,7 +48,16 @@ function FloatingOrb({
   );
 }
 
-export function Hero() {
+interface HeroProps {
+  settings?: Record<string, string>;
+}
+
+export function Hero({ settings = {} }: HeroProps) {
+  const nameSetting = settings.heroName || "Moaz Mohamed";
+  const nameParts = nameSetting.split(" ");
+  const firstName = nameParts[0] || "Moaz";
+  const lastName = nameParts.slice(1).join(" ") || "Mohamed";
+
   return (
     <section
       id="home"
@@ -148,8 +157,8 @@ export function Hero() {
             variants={itemVariants}
             className="font-heading text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl"
           >
-            <span className="text-foreground">Moaz</span>{" "}
-            <span className="gradient-text">Mohamed</span>
+            <span className="text-foreground">{firstName}</span>{" "}
+            <span className="gradient-text">{lastName}</span>
           </motion.h1>
 
           {/* Headline */}
@@ -157,9 +166,7 @@ export function Hero() {
             variants={itemVariants}
             className="mt-4 font-heading text-xl font-medium text-muted sm:text-2xl md:text-3xl"
           >
-            Digital Product Designer{" "}
-            <span className="gradient-text">&</span>{" "}
-            Software Engineer
+            {settings.heroHeadline || "Digital Product Designer & Software Engineer"}
           </motion.p>
 
           {/* Subheadline */}
@@ -167,9 +174,7 @@ export function Hero() {
             variants={itemVariants}
             className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted sm:text-lg"
           >
-            I design, develop and launch modern websites, mobile applications,
-            brands and smart IoT systems — crafting premium digital experiences
-            that leave a lasting impression.
+            {settings.heroSubheadline || "I design, develop and launch modern websites, mobile applications, brands and smart IoT systems — crafting premium digital experiences that leave a lasting impression."}
           </motion.p>
 
           {/* CTA Buttons */}
@@ -183,7 +188,7 @@ export function Hero() {
               size="lg"
               className="min-w-[180px] rounded-xl text-base"
             >
-              <Link href="#portfolio">View My Work</Link>
+              <Link href="/#portfolio">View My Work</Link>
             </Button>
             <Button
               asChild
@@ -191,7 +196,7 @@ export function Hero() {
               size="lg"
               className="min-w-[180px] rounded-xl text-base"
             >
-              <Link href="#contact">Hire Me</Link>
+              <Link href="/#contact">Hire Me</Link>
             </Button>
           </motion.div>
 

@@ -44,7 +44,7 @@ export default async function HomePage() {
       <Navbar />
       <main className="flex-grow">
         <section id="home">
-          <Hero />
+          <Hero settings={settingsMap} />
         </section>
         <About settings={settingsMap} />
         <Services />
@@ -53,9 +53,9 @@ export default async function HomePage() {
         <Portfolio projects={projects} />
         <Testimonials />
         <Experience />
-        <Contact />
+        <Contact settings={settingsMap} />
       </main>
-      <Footer />
+      <Footer settings={settingsMap} />
     </>
   );
 }

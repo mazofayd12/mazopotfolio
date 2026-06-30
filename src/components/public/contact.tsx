@@ -11,7 +11,11 @@ import { submitContact } from "@/actions/contact";
 import { Mail, Phone, MapPin, Send, MessageSquare, Sparkles } from "lucide-react";
 import { GithubIcon, LinkedinIcon, TwitterIcon } from "@/components/shared/brand-icons";
 
-export function Contact() {
+interface ContactProps {
+  settings?: Record<string, string>;
+}
+
+export function Contact({ settings = {} }: ContactProps) {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -87,8 +91,8 @@ export function Contact() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Email Me</h4>
-                    <a href="mailto:moaz.mohamed@example.com" className="text-sm font-semibold hover:text-primary-light transition-colors">
-                      moaz.mohamed@example.com
+                    <a href={`mailto:${settings.contactEmail || "moaz.mohamed@example.com"}`} className="text-sm font-semibold hover:text-primary-light transition-colors">
+                      {settings.contactEmail || "moaz.mohamed@example.com"}
                     </a>
                   </div>
                 </div>
@@ -99,8 +103,13 @@ export function Contact() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Call / WhatsApp</h4>
-                    <a href="https://wa.me/201234567890" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold hover:text-secondary-light transition-colors">
-                      +20 123 456 7890
+                    <a 
+                      href={`https://wa.me/${(settings.socialWhatsapp || settings.contactPhone || "201234567890").replace(/[^0-9]/g, "")}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-sm font-semibold hover:text-secondary-light transition-colors"
+                    >
+                      {settings.contactPhone || "+20 123 456 7890"}
                     </a>
                   </div>
                 </div>
@@ -112,7 +121,7 @@ export function Contact() {
                   <div>
                     <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Location</h4>
                     <p className="text-sm font-semibold">
-                      Cairo, Egypt / Remote
+                      {settings.contactLocation || "Cairo, Egypt / Remote"}
                     </p>
                   </div>
                 </div>
@@ -124,10 +133,10 @@ export function Contact() {
               <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Connect Globally</h4>
               <div className="flex flex-wrap gap-3">
                 {[
-                  { icon: GithubIcon, href: "#", color: "hover:text-white hover:bg-neutral-800" },
-                  { icon: LinkedinIcon, href: "#", color: "hover:text-white hover:bg-blue-600" },
-                  { icon: TwitterIcon, href: "#", color: "hover:text-white hover:bg-sky-500" },
-                  { icon: MessageSquare, href: "#", color: "hover:text-white hover:bg-emerald-600" },
+                  { icon: GithubIcon, href: settings.socialGithub || "#", color: "hover:text-white hover:bg-neutral-800" },
+                  { icon: LinkedinIcon, href: settings.socialLinkedin || "#", color: "hover:text-white hover:bg-blue-600" },
+                  { icon: TwitterIcon, href: settings.socialTwitter || "#", color: "hover:text-white hover:bg-sky-500" },
+                  { icon: MessageSquare, href: `https://wa.me/${(settings.socialWhatsapp || settings.contactPhone || "201234567890").replace(/[^0-9]/g, "")}`, color: "hover:text-white hover:bg-emerald-600" },
                 ].map((social, i) => (
                   <a
                     key={i}
