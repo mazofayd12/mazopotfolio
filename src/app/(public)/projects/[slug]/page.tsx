@@ -131,13 +131,15 @@ export default async function ProjectDetailPage({ params }: ProjectDetailsProps)
                   <div className="relative w-full aspect-[16/10] overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.01]">
                     <iframe
                       src={
-                        project.figmaUrl.includes("embed")
+                        (project.figmaUrl.includes("embed")
                           ? project.figmaUrl
-                          : `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(project.figmaUrl)}`
+                          : `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(project.figmaUrl)}`) + "&hide_ui=1"
                       }
-                      className="absolute inset-0 w-full h-full border-0"
+                      className="absolute top-0 left-0 w-full h-[calc(100%+48px)] border-0"
                       allowFullScreen
                     />
+                    {/* Bottom overlay block to completely prevent clicks or scroll reveals */}
+                    <div className="absolute bottom-0 left-0 right-0 h-2 bg-background z-10" />
                   </div>
                 </div>
               )}
