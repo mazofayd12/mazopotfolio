@@ -14,6 +14,8 @@ import { Footer } from "@/components/public/footer";
 
 export default async function HomePage() {
   let dbProjects: any[] = [];
+  let settingsMap: Record<string, string> = {};
+  
   try {
     dbProjects = await prisma.project.findMany({
       where: { published: true },
@@ -21,7 +23,17 @@ export default async function HomePage() {
       take: 6,
     });
   } catch (error) {
-    console.error("Database query failed in HomePage:", error);
+    console.error("Database query failed in HomePage projects fetch:", error);
+  }
+
+  try {
+    const settings = await prisma.siteSettings.findMany();
+    settingsMap = settings.reduce((acc, curr) => {
+      acc[curr.key] = curr.value;
+      return acc;
+    }, {} as Record<string, string>);
+  } catch (error) {
+    console.error("Database query failed in HomePage settings fetch:", error);
   }
 
   const projects = dbProjects.length > 0 ? dbProjects : undefined;
@@ -34,7 +46,7 @@ export default async function HomePage() {
         <section id="home">
           <Hero />
         </section>
-        <About />
+        <About settings={settingsMap} />
         <Services />
         <Statistics />
         <Skills />

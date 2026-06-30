@@ -6,14 +6,31 @@ import { ScrollReveal } from "@/components/shared/scroll-reveal";
 import { Button } from "@/components/ui/button";
 import { Download, CheckCircle } from "lucide-react";
 
-const highlights = [
-  "5+ years of hands-on experience",
-  "70+ projects delivered worldwide",
-  "Full-stack design & development",
-  "IoT & embedded systems expertise",
-];
+interface AboutProps {
+  settings?: {
+    aboutBio?: string;
+    aboutPhoto?: string;
+    aboutResume?: string;
+    aboutHighlights?: string;
+    aboutExperience?: string;
+  };
+}
 
-export function About() {
+export function About({ settings }: AboutProps) {
+  const bio = settings?.aboutBio || "";
+  const photo = settings?.aboutPhoto || "";
+  const resume = settings?.aboutResume || "";
+  const experience = settings?.aboutExperience || "5";
+  
+  const highlightsList = settings?.aboutHighlights
+    ? settings.aboutHighlights.split(",").map((h) => h.trim()).filter(Boolean)
+    : [
+        "5+ years of hands-on experience",
+        "70+ projects delivered worldwide",
+        "Full-stack design & development",
+        "IoT & embedded systems expertise",
+      ];
+
   return (
     <section id="about" className="relative py-24 sm:py-32">
       {/* Background accent */}
@@ -34,18 +51,28 @@ export function About() {
           <ScrollReveal direction="left">
             <div className="relative mx-auto max-w-md lg:max-w-none">
               {/* Gradient border frame */}
-              <div className="gradient-border relative aspect-[4/5] overflow-hidden rounded-2xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-2xl shadow-primary/30">
-                      <span className="font-heading text-3xl font-bold text-white">
-                        MM
-                      </span>
+              <div className="gradient-border relative aspect-[4/5] overflow-hidden rounded-2xl bg-white/[0.01]">
+                {photo ? (
+                  <img
+                    src={photo}
+                    alt="Moaz Mohamed"
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20" />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary shadow-2xl shadow-primary/30">
+                          <span className="font-heading text-3xl font-bold text-white">
+                            MM
+                          </span>
+                        </div>
+                        <p className="text-sm text-muted">Photo Coming Soon</p>
+                      </div>
                     </div>
-                    <p className="text-sm text-muted">Photo Coming Soon</p>
-                  </div>
-                </div>
+                  </>
+                )}
                 {/* Decorative elements */}
                 <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-primary/20 blur-2xl" />
                 <div className="absolute -bottom-4 -left-4 h-32 w-32 rounded-full bg-secondary/20 blur-2xl" />
@@ -59,7 +86,7 @@ export function About() {
                 transition={{ delay: 0.5, duration: 0.5 }}
                 className="absolute -bottom-6 -right-6 rounded-2xl border border-white/[0.06] bg-background/80 p-4 backdrop-blur-xl sm:p-5"
               >
-                <div className="text-3xl font-bold gradient-text">5+</div>
+                <div className="text-3xl font-bold gradient-text">{experience}+</div>
                 <div className="text-sm text-muted">Years Experience</div>
               </motion.div>
             </div>
@@ -74,24 +101,32 @@ export function About() {
               </h3>
 
               <div className="space-y-4 text-base leading-relaxed text-muted">
-                <p>
-                  With over 5 years of professional experience, I specialize in
-                  creating stunning digital products that blend beautiful design
-                  with powerful functionality. From sleek websites and mobile
-                  apps to complete brand identities and IoT solutions — I bring
-                  ideas to life.
-                </p>
-                <p>
-                  I believe great design is invisible. It should feel natural,
-                  intuitive, and delightful. Every pixel I place and every line
-                  of code I write is driven by this philosophy, ensuring that
-                  each project I deliver exceeds expectations.
-                </p>
+                {bio ? (
+                  bio.split("\n\n").map((paragraph, index) => (
+                    <p key={index}>{paragraph}</p>
+                  ))
+                ) : (
+                  <>
+                    <p>
+                      With over 5 years of professional experience, I specialize in
+                      creating stunning digital products that blend beautiful design
+                      with powerful functionality. From sleek websites and mobile
+                      apps to complete brand identities and IoT solutions — I bring
+                      ideas to life.
+                    </p>
+                    <p>
+                      I believe great design is invisible. It should feel natural,
+                      intuitive, and delightful. Every pixel I place and every line
+                      of code I write is driven by this philosophy, ensuring that
+                      each project I deliver exceeds expectations.
+                    </p>
+                  </>
+                )}
               </div>
 
               {/* Highlight points */}
               <ul className="grid gap-3 sm:grid-cols-2">
-                {highlights.map((item, i) => (
+                {highlightsList.map((item, i) => (
                   <motion.li
                     key={item}
                     initial={{ opacity: 0, x: -10 }}
@@ -106,10 +141,19 @@ export function About() {
                 ))}
               </ul>
 
-              <Button variant="gradient" size="lg" className="mt-4 rounded-xl">
-                <Download className="mr-2 h-4 w-4" />
-                Download Resume
-              </Button>
+              {resume && (
+                <a
+                  href={resume}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block mt-4"
+                >
+                  <Button variant="gradient" size="lg" className="rounded-xl">
+                    <Download className="mr-2 h-4 w-4" />
+                    Download Resume
+                  </Button>
+                </a>
+              )}
             </div>
           </ScrollReveal>
         </div>

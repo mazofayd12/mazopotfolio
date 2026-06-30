@@ -7,9 +7,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Save } from "lucide-react";
+import { Save, X, Image, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { updateSettings } from "@/actions/settings";
+import { UploadButton } from "@/lib/uploadthing";
 
 interface SettingItem {
   key: string;
@@ -36,6 +37,10 @@ export function SettingsClient({ initialSettings }: SettingsClientProps) {
     heroHeadline: settingsMap["heroHeadline"] || "Digital Product Designer & Software Engineer",
     heroSubheadline: settingsMap["heroSubheadline"] || "I design, develop and launch modern websites, mobile applications, brands and smart IoT systems.",
     aboutBio: settingsMap["aboutBio"] || "Passionate about combining premium visual aesthetics with robust technical architectures.",
+    aboutPhoto: settingsMap["aboutPhoto"] || "",
+    aboutResume: settingsMap["aboutResume"] || "",
+    aboutHighlights: settingsMap["aboutHighlights"] || "5+ years of hands-on experience, 70+ projects delivered worldwide, Full-stack design & development, IoT & embedded systems expertise",
+    aboutExperience: settingsMap["aboutExperience"] || "5",
     socialLinkedin: settingsMap["socialLinkedin"] || "",
     socialGithub: settingsMap["socialGithub"] || "",
     socialTwitter: settingsMap["socialTwitter"] || "",
@@ -141,14 +146,120 @@ export function SettingsClient({ initialSettings }: SettingsClientProps) {
         {/* About Section Settings Tab */}
         <TabsContent value="about">
           <Card className="glass border-white/[0.05] bg-white/[0.01] p-6 rounded-2xl mt-4">
-            <CardContent className="p-0 space-y-4">
-              <h3 className="font-heading text-lg font-bold text-foreground mb-4">About Bio Details</h3>
+            <CardContent className="p-0 space-y-6">
+              <h3 className="font-heading text-lg font-bold text-foreground">About Section Customization</h3>
+              
               <div className="space-y-4">
+                {/* Biography */}
                 <div className="space-y-2">
                   <Label htmlFor="aboutBio" className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Biography Paragraph</Label>
                   <Textarea id="aboutBio" name="aboutBio" value={form.aboutBio} onChange={handleChange} rows={6} className="bg-white/[0.01] border-white/[0.06] rounded-xl" />
                 </div>
-                <Button onClick={() => handleSave(["aboutBio"])} disabled={loading} className="w-full h-11 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl gap-2 mt-2">
+
+                {/* Experience & Highlights */}
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="aboutExperience" className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Years of Experience</Label>
+                    <Input id="aboutExperience" name="aboutExperience" value={form.aboutExperience} onChange={handleChange} className="h-11 bg-white/[0.01] border-white/[0.06] rounded-xl" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="aboutHighlights" className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Highlights Checklist (Comma Separated)</Label>
+                    <Input id="aboutHighlights" name="aboutHighlights" value={form.aboutHighlights} onChange={handleChange} className="h-11 bg-white/[0.01] border-white/[0.06] rounded-xl" placeholder="e.g. 5+ years experience, 70+ projects..." />
+                  </div>
+                </div>
+
+                {/* Profile Photo Uploader */}
+                <div className="space-y-3 pt-2">
+                  <Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Profile Photo</Label>
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <div className="relative aspect-square w-28 overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.02] flex items-center justify-center">
+                      {form.aboutPhoto ? (
+                        <>
+                          <img src={form.aboutPhoto} alt="Profile preview" className="object-cover w-full h-full" />
+                          <button
+                            type="button"
+                            onClick={() => setForm((prev) => ({ ...prev, aboutPhoto: "" }))}
+                            className="absolute top-1 right-1 p-1 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </>
+                      ) : (
+                        <Image className="h-8 w-8 text-muted-foreground/40" />
+                      )}
+                    </div>
+                    <div className="flex-grow space-y-2">
+                      <UploadButton
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          if (res && res.length > 0) {
+                            setForm((prev) => ({ ...prev, aboutPhoto: res[0].url }));
+                            toast.success("Profile photo uploaded successfully!");
+                          }
+                        }}
+                        onUploadError={(err) => {
+                          toast.error(`Upload failed: ${err.message}`);
+                        }}
+                      />
+                      <Label htmlFor="aboutPhoto" className="text-[10px] font-semibold text-muted/60 block mt-2">Or paste photo URL:</Label>
+                      <Input
+                        id="aboutPhoto"
+                        name="aboutPhoto"
+                        value={form.aboutPhoto}
+                        onChange={handleChange}
+                        className="h-9 bg-white/[0.01] border-white/[0.06] rounded-lg text-xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Resume PDF Uploader */}
+                <div className="space-y-3 pt-2 border-t border-white/[0.04]">
+                  <Label className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Resume PDF File</Label>
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                    <div className="relative aspect-square w-28 overflow-hidden rounded-xl border border-white/[0.06] bg-white/[0.02] flex items-center justify-center">
+                      {form.aboutResume ? (
+                        <div className="text-center p-2">
+                          <FileText className="h-8 w-8 mx-auto text-primary" />
+                          <span className="text-[9px] text-muted line-clamp-1 block mt-1">Resume Set</span>
+                          <button
+                            type="button"
+                            onClick={() => setForm((prev) => ({ ...prev, aboutResume: "" }))}
+                            className="absolute top-1 right-1 p-1 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ) : (
+                        <FileText className="h-8 w-8 text-muted-foreground/40" />
+                      )}
+                    </div>
+                    <div className="flex-grow space-y-2">
+                      <UploadButton
+                        endpoint="mediaUploader"
+                        onClientUploadComplete={(res) => {
+                          if (res && res.length > 0) {
+                            setForm((prev) => ({ ...prev, aboutResume: res[0].url }));
+                            toast.success("Resume uploaded successfully!");
+                          }
+                        }}
+                        onUploadError={(err) => {
+                          toast.error(`Upload failed: ${err.message}`);
+                        }}
+                      />
+                      <Label htmlFor="aboutResume" className="text-[10px] font-semibold text-muted/60 block mt-2">Or paste resume file URL:</Label>
+                      <Input
+                        id="aboutResume"
+                        name="aboutResume"
+                        value={form.aboutResume}
+                        onChange={handleChange}
+                        className="h-9 bg-white/[0.01] border-white/[0.06] rounded-lg text-xs"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <Button onClick={() => handleSave(["aboutBio", "aboutPhoto", "aboutResume", "aboutHighlights", "aboutExperience"])} disabled={loading} className="w-full h-11 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl gap-2 mt-4">
                   <Save className="h-4 w-4" /> Save About Settings
                 </Button>
               </div>
