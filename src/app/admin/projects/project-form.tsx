@@ -28,6 +28,7 @@ interface ProjectFormProps {
     technologies: string[];
     projectUrl: string | null;
     githubUrl: string | null;
+    figmaUrl?: string | null;
     clientName: string | null;
     completionDate: Date | null;
     featured: boolean;
@@ -73,6 +74,7 @@ export function ProjectForm({ project, onSubmitAction, title }: ProjectFormProps
     technologies: project?.technologies?.join(", ") || "",
     projectUrl: project?.projectUrl || "",
     githubUrl: project?.githubUrl || "",
+    figmaUrl: project?.figmaUrl || "",
     clientName: project?.clientName || "",
     completionDate: formatDateString(project?.completionDate),
     featured: project?.featured || false,
@@ -328,8 +330,8 @@ export function ProjectForm({ project, onSubmitAction, title }: ProjectFormProps
               </div>
             </div>
 
-            {/* Project URL & Github URL */}
-            <div className="grid gap-6 sm:grid-cols-2">
+            {/* Project URL, Github URL & Figma URL */}
+            <div className="grid gap-6 sm:grid-cols-3">
               <div className="space-y-2">
                 <Label htmlFor="projectUrl" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Live Site URL</Label>
                 <Input
@@ -352,6 +354,19 @@ export function ProjectForm({ project, onSubmitAction, title }: ProjectFormProps
                   value={form.githubUrl}
                   onChange={handleChange}
                   placeholder="https://github.com/user/repo"
+                  className="h-11 bg-white/[0.01] border-white/[0.06] rounded-xl focus:border-primary/50 focus:ring-primary/20"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="figmaUrl" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Figma Design URL</Label>
+                <Input
+                  id="figmaUrl"
+                  name="figmaUrl"
+                  type="url"
+                  value={form.figmaUrl}
+                  onChange={handleChange}
+                  placeholder="https://www.figma.com/file/..."
                   className="h-11 bg-white/[0.01] border-white/[0.06] rounded-xl focus:border-primary/50 focus:ring-primary/20"
                 />
               </div>

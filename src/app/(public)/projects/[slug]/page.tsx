@@ -3,7 +3,7 @@ import { Navbar } from "@/components/public/navbar";
 import { Footer } from "@/components/public/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, ArrowLeft, Calendar, User, Tag } from "lucide-react";
+import { ExternalLink, ArrowLeft, Calendar, User, Tag, Layers } from "lucide-react";
 import { GithubIcon } from "@/components/shared/brand-icons";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -120,6 +120,23 @@ export default async function ProjectDetailPage({ params }: ProjectDetailsProps)
                   dangerouslySetInnerHTML={{ __html: project.content }}
                 />
               )}
+
+              {/* Figma Embed Showcase */}
+              {project.figmaUrl && (
+                <div className="space-y-4 pt-8 border-t border-white/[0.05]">
+                  <h3 className="font-heading text-lg font-bold text-foreground flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse" />
+                    Interactive Figma Design
+                  </h3>
+                  <div className="relative w-full aspect-[16/10] overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.01]">
+                    <iframe
+                      src={`https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(project.figmaUrl)}`}
+                      className="absolute inset-0 w-full h-full border-0"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Sidebar Details Area (Col 4) */}
@@ -211,6 +228,23 @@ export default async function ProjectDetailPage({ params }: ProjectDetailsProps)
                       >
                         Source Code
                         <GithubIcon className="h-4 w-4" />
+                      </Button>
+                    </a>
+                  )}
+
+                  {project.figmaUrl && (
+                    <a
+                      href={project.figmaUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full block"
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full h-11 border-white/[0.06] bg-white/[0.01] hover:bg-white/[0.04] text-foreground rounded-xl gap-2"
+                      >
+                        Figma Project
+                        <Layers className="h-4 w-4 text-purple-400" />
                       </Button>
                     </a>
                   )}

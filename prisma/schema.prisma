@@ -40,6 +40,7 @@ model Project {
   technologies    String[]
   projectUrl      String?
   githubUrl       String?
+  figmaUrl        String?
   clientName      String?
   completionDate  DateTime?
   featured        Boolean   @default(false)

@@ -14,6 +14,7 @@ export const projectSchema = z.object({
   technologies: z.array(z.string()).default([]),
   projectUrl: z.string().url().optional().or(z.literal("")),
   githubUrl: z.string().url().optional().or(z.literal("")),
+  figmaUrl: z.string().url().optional().or(z.literal("")),
   clientName: z.string().optional(),
   completionDate: z.string().optional(),
   featured: z.boolean().default(false),
