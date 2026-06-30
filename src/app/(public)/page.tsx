@@ -20,7 +20,6 @@ export default async function HomePage() {
     dbProjects = await prisma.project.findMany({
       where: { published: true },
       orderBy: { order: "asc" },
-      take: 6,
     });
   } catch (error) {
     console.error("Database query failed in HomePage projects fetch:", error);
