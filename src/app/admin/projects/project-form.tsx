@@ -29,6 +29,7 @@ interface ProjectFormProps {
     projectUrl: string | null;
     githubUrl: string | null;
     figmaUrl?: string | null;
+    images?: any;
     clientName: string | null;
     completionDate: Date | null;
     featured: boolean;
@@ -53,6 +54,22 @@ const categories = [
 export function ProjectForm({ project, onSubmitAction, title }: ProjectFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  
+  const [galleryImages, setGalleryImages] = useState<string[]>(() => {
+    if (project?.images) {
+      try {
+        if (typeof project.images === "string") {
+          return JSON.parse(project.images);
+        }
+        if (Array.isArray(project.images)) {
+          return project.images as string[];
+        }
+      } catch (e) {
+        console.error("Failed to parse gallery images:", e);
+      }
+    }
+    return [];
+  });
 
   // Helper to format Date to YYYY-MM-DD
   const formatDateString = (date: Date | null | undefined) => {
@@ -100,6 +117,7 @@ export function ProjectForm({ project, onSubmitAction, title }: ProjectFormProps
 
     const submitData = {
       ...form,
+      images: galleryImages,
       technologies: form.technologies
         .split(",")
         .map((t) => t.trim())
@@ -328,6 +346,54 @@ export function ProjectForm({ project, onSubmitAction, title }: ProjectFormProps
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Gallery Images (Multiple Images) */}
+            <div className="space-y-3 p-4 rounded-xl border border-white/[0.04] bg-white/[0.01]">
+              <Label className="text-xs font-bold uppercase tracking-wider text-muted-foreground block">
+                Project Gallery Images (Upload up to 10 images)
+              </Label>
+              
+              {/* Upload Button */}
+              <div className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-white/[0.08] rounded-lg bg-black/20 gap-2">
+                <p className="text-xs text-muted">Upload one or more image files (max 8MB each, up to 10)</p>
+                <UploadButton
+                  endpoint="projectImageUploader"
+                  onClientUploadComplete={(res) => {
+                    if (res && res.length > 0) {
+                      const urls = res.map((file) => file.url);
+                      setGalleryImages((prev) => [...prev, ...urls]);
+                      toast.success("Gallery images uploaded successfully!");
+                    }
+                  }}
+                  onUploadError={(error: Error) => {
+                    toast.error(`Upload failed: ${error.message}`);
+                  }}
+                  appearance={{
+                    button: "h-9 px-4 rounded-xl text-xs bg-white/[0.05] border border-white/[0.08] text-white hover:bg-white/[0.1] transition-all",
+                    allowedContent: "hidden",
+                  }}
+                />
+              </div>
+
+              {/* Gallery Preview Grid */}
+              {galleryImages.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+                  {galleryImages.map((url, index) => (
+                    <div key={index} className="relative aspect-video rounded-lg overflow-hidden border border-white/[0.08] bg-black/40 group">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={url} alt={`Gallery image ${index + 1}`} className="object-cover w-full h-full" />
+                      <button
+                        type="button"
+                        onClick={() => setGalleryImages((prev) => prev.filter((_, i) => i !== index))}
+                        className="absolute top-1.5 right-1.5 p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-full transition-colors opacity-0 group-hover:opacity-100 flex items-center justify-center"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Project URL, Github URL & Figma URL */}

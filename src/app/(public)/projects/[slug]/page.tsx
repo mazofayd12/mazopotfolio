@@ -63,6 +63,19 @@ export default async function ProjectDetailPage({ params }: ProjectDetailsProps)
     notFound();
   }
 
+  let galleryImages: string[] = [];
+  if (project.images) {
+    try {
+      if (typeof project.images === "string") {
+        galleryImages = JSON.parse(project.images);
+      } else if (Array.isArray(project.images)) {
+        galleryImages = project.images as string[];
+      }
+    } catch (e) {
+      console.error("Failed to parse project gallery images:", e);
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -119,6 +132,26 @@ export default async function ProjectDetailPage({ params }: ProjectDetailsProps)
                   className="prose prose-invert max-w-none text-muted space-y-4 pt-4 border-t border-white/[0.05]"
                   dangerouslySetInnerHTML={{ __html: project.content }}
                 />
+              )}
+
+              {/* Project Screenshots Gallery */}
+              {galleryImages.length > 0 && (
+                <div className="space-y-4 pt-8 border-t border-white/[0.05]">
+                  <h3 className="font-heading text-lg font-bold text-foreground">
+                    Project Gallery
+                  </h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    {galleryImages.map((imageUrl, idx) => (
+                      <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-white/[0.06] bg-white/[0.01] hover:border-primary/30 transition-all duration-300">
+                        <img
+                          src={imageUrl}
+                          alt={`Screenshot ${idx + 1}`}
+                          className="object-cover w-full h-full hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
 
               {/* Figma Embed Showcase */}
