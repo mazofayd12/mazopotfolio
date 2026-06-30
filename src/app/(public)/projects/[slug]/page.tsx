@@ -94,13 +94,23 @@ export default async function ProjectDetailPage({ params }: ProjectDetailsProps)
                 {project.description}
               </p>
 
-              {/* Cover Placeholder Grid */}
-              <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-indigo-950/40 to-background flex items-center justify-center p-8">
-                <span className="font-heading text-xl font-semibold tracking-wider text-white/20">
-                  Visual Showcase
-                </span>
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.01),transparent)] pointer-events-none" />
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
+              {/* Cover Image / Placeholder Grid */}
+              <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-white/[0.06] bg-gradient-to-br from-indigo-950/40 to-background flex items-center justify-center">
+                {project.coverImage ? (
+                  <img
+                    src={project.coverImage}
+                    alt={project.title}
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <>
+                    <span className="font-heading text-xl font-semibold tracking-wider text-white/20">
+                      Visual Showcase
+                    </span>
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.01),transparent)] pointer-events-none" />
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
+                  </>
+                )}
               </div>
 
               {/* Long Description Content */}

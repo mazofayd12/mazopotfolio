@@ -1,3 +1,4 @@
+import { prisma } from "@/lib/prisma";
 import { LoadingScreen } from "@/components/public/loading-screen";
 import { Navbar } from "@/components/public/navbar";
 import { Hero } from "@/components/public/hero";
@@ -11,7 +12,20 @@ import { Experience } from "@/components/public/experience";
 import { Contact } from "@/components/public/contact";
 import { Footer } from "@/components/public/footer";
 
-export default function HomePage() {
+export default async function HomePage() {
+  let dbProjects: any[] = [];
+  try {
+    dbProjects = await prisma.project.findMany({
+      where: { published: true },
+      orderBy: { order: "asc" },
+      take: 6,
+    });
+  } catch (error) {
+    console.error("Database query failed in HomePage:", error);
+  }
+
+  const projects = dbProjects.length > 0 ? dbProjects : undefined;
+
   return (
     <>
       <LoadingScreen />
@@ -24,7 +38,7 @@ export default function HomePage() {
         <Services />
         <Statistics />
         <Skills />
-        <Portfolio />
+        <Portfolio projects={projects} />
         <Testimonials />
         <Experience />
         <Contact />

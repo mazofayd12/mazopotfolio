@@ -97,11 +97,21 @@ export default async function BlogPage() {
                   className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.01] transition-all duration-300 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 flex flex-col h-full"
                 >
                   {/* Image/Gradient Cover */}
-                  <div className="relative aspect-video w-full overflow-hidden flex items-center justify-center p-6 bg-gradient-to-br from-purple-950 to-background border-b border-white/[0.04]">
-                    <span className="font-heading text-base md:text-lg font-bold tracking-wider text-white/30 group-hover:scale-105 transition-transform duration-500 text-center px-4">
-                      {post.title}
-                    </span>
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
+                  <div className="relative aspect-video w-full overflow-hidden flex items-center justify-center bg-gradient-to-br from-purple-950 to-background border-b border-white/[0.04]">
+                    {post.coverImage ? (
+                      <img
+                        src={post.coverImage}
+                        alt={post.title}
+                        className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <>
+                        <span className="font-heading text-base md:text-lg font-bold tracking-wider text-white/30 group-hover:scale-105 transition-transform duration-500 text-center px-4">
+                          {post.title}
+                        </span>
+                        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
+                      </>
+                    )}
                   </div>
 
                   {/* Body details */}

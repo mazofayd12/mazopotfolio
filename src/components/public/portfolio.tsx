@@ -22,7 +22,7 @@ const categories = [
   "Embedded Systems",
 ];
 
-const projects = [
+const sampleProjects = [
   {
     id: "1",
     title: "E-Commerce Luxury Platform",
@@ -33,6 +33,7 @@ const projects = [
     projectUrl: "#",
     githubUrl: "#",
     coverColor: "from-purple-900 to-indigo-950",
+    coverImage: "",
   },
   {
     id: "2",
@@ -44,6 +45,7 @@ const projects = [
     projectUrl: "#",
     githubUrl: "#",
     coverColor: "from-blue-900 to-cyan-950",
+    coverImage: "",
   },
   {
     id: "3",
@@ -55,6 +57,7 @@ const projects = [
     projectUrl: "#",
     githubUrl: "#",
     coverColor: "from-emerald-900 to-teal-950",
+    coverImage: "",
   },
   {
     id: "4",
@@ -66,6 +69,7 @@ const projects = [
     projectUrl: "#",
     githubUrl: "#",
     coverColor: "from-rose-900 to-pink-950",
+    coverImage: "",
   },
   {
     id: "5",
@@ -77,6 +81,7 @@ const projects = [
     projectUrl: "#",
     githubUrl: "#",
     coverColor: "from-amber-900 to-orange-950",
+    coverImage: "",
   },
   {
     id: "6",
@@ -88,10 +93,11 @@ const projects = [
     projectUrl: "#",
     githubUrl: "#",
     coverColor: "from-red-900 to-rose-950",
+    coverImage: "",
   },
 ];
 
-export function Portfolio() {
+export function Portfolio({ projects = sampleProjects }: { projects?: any[] }) {
   const [activeCategory, setActiveCategory] = useState("All");
 
   const filteredProjects = activeCategory === "All"
@@ -143,19 +149,29 @@ export function Portfolio() {
                 key={project.id}
                 className="group relative overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.01] transition-all duration-300 hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/5 flex flex-col h-full"
               >
-                {/* Visual Cover (Gradient Mesh Placeholder) */}
+                {/* Visual Cover */}
                 <div className={cn(
-                  "relative aspect-video w-full bg-gradient-to-br overflow-hidden flex items-center justify-center p-6",
-                  project.coverColor
+                  "relative aspect-video w-full overflow-hidden flex items-center justify-center bg-gradient-to-br",
+                  project.coverImage ? "" : (project.coverColor || "from-purple-900 to-indigo-950")
                 )}>
-                  {/* Glassmorphic Project Logo/Initial */}
-                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.05),transparent)] pointer-events-none" />
-                  <span className="font-heading text-xl md:text-2xl font-bold tracking-wider text-white/40 group-hover:scale-110 transition-transform duration-500">
-                    {project.title.split(" ").slice(0, 2).join(" ")}
-                  </span>
-                  
-                  {/* Subtle Grid Pattern Overlay */}
-                  <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
+                  {project.coverImage ? (
+                    <img
+                      src={project.coverImage}
+                      alt={project.title}
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <>
+                      {/* Glassmorphic Project Logo/Initial */}
+                      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(255,255,255,0.05),transparent)] pointer-events-none" />
+                      <span className="font-heading text-xl md:text-2xl font-bold tracking-wider text-white/40 group-hover:scale-110 transition-transform duration-500 p-6 text-center">
+                        {project.title.split(" ").slice(0, 2).join(" ")}
+                      </span>
+                      
+                      {/* Subtle Grid Pattern Overlay */}
+                      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
+                    </>
+                  )}
                 </div>
 
                 {/* Card Content */}
@@ -179,7 +195,7 @@ export function Portfolio() {
                   <div className="mt-6 space-y-4">
                     {/* Tech Badges */}
                     <div className="flex flex-wrap gap-1.5">
-                      {project.technologies.map((tech) => (
+                      {(project.technologies || []).map((tech: string) => (
                         <Badge
                           key={tech}
                           variant="secondary"
